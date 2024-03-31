@@ -1,8 +1,19 @@
 from fastapi import FastAPI, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
+
 import random
 from models import Chute
 
 app = FastAPI()
+
+# Configuração do CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permitir todas as origens, você pode restringir a origem desejada
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS"],  # Permitir métodos GET, POST e OPTIONS
+    allow_headers=["*"],  # Permitir todos os cabeçalhos, você pode restringir os cabeçalhos desejados
+)
 
 copos = [0, 0, 1]
 
