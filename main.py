@@ -5,36 +5,28 @@ from models import Chute
 app = FastAPI()
 
 copos = [0, 0, 1]
-random.shuffle(copos)
 
-if copos[0] == 1:
-    resposta = 0
-
-elif copos[1] == 1:
-    resposta = 1
-
-elif copos[2] == 1:
-    resposta = 2
-
+@app.post("/embaralhar")
+async def embaralhar_copos():
+    random.shuffle(copos)
+    return {"message": "Copos embaralhados com sucesso!"}
 
 @app.get("/resposta")
 async def get_resposta():
-    return resposta
-
+    for i, cup in enumerate(copos):
+        if cup == 1:
+            return {"resposta": i}
+    raise HTTPException(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Resposta não encontrada"
+    )
 
 @app.post("/chute")
 async def post_chute(chute: Chute):
-    if chute.copo == resposta:
-        print("Você Acertou!")
-    elif chute.copo <= 3 and chute.copo >= 0 and chute.copo != resposta:
-        print("Você errou!")
+    if chute.copo == copos.index(1):
+        return {"message": "Você acertou!"}
     else:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Número Inválido"
-        )
+        return {"message": "Você errou!"}
 
-
-if __name__ == "__main__":  # variável que o python cria sempre no arquivo principal
+if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
