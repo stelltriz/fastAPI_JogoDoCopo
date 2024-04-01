@@ -20,7 +20,7 @@ copos = [0, 0, 1]
 @app.post("/embaralhar")
 async def embaralhar_copos():
     random.shuffle(copos)
-    return {"message": "Copos embaralhados com sucesso!"}
+    return {"message": "Copos embaralhados!"}
 
 @app.get("/resposta")
 async def get_resposta():
@@ -34,9 +34,9 @@ async def get_resposta():
 @app.post("/chute")
 async def post_chute(chute: Chute):
     if chute.copo == copos.index(1):
-        return {"message": "Você acertou!"}
+        return {"message": "Você acertou!", "confetti": True}
     else:
-        return {"message": "Você errou!"}
+        return {"message": "Você errou!", "confetti": False}
 
 if __name__ == "__main__":
     import uvicorn
