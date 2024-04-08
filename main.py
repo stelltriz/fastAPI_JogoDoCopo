@@ -20,7 +20,7 @@ copos = [0, 0, 1]
 @app.post("/embaralhar")
 async def embaralhar_copos():
     random.shuffle(copos)
-    return {"message": "Copos embaralhados!"}
+    return {"message": ""}
 
 @app.get("/resposta")
 async def get_resposta():
